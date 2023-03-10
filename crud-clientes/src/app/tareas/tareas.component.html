@@ -13,23 +13,38 @@
                 <tbody>
                     <tr *ngFor="let tarea of tareas">
                         <td>{{ tarea.nombre }}</td>
-                        <td>{{ tarea.completado }}</td>
-                        <td></td>
+                        <td>
+                            <span *ngIf="tarea.completado; else tareaIncompleta">Si</span>
+
+                            <ng-template #tareaIncompleta>
+                                No
+                            </ng-template>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-primary" (click)="edit(tarea)">
+                                    Editar
+                                </button>
+                                <button class="btn btn-danger btn-sm" (click)="delete(tarea)">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="col-md-6">
-            <h3>Nueva Tarea</h3>
-            <form class="mt-5">
+            <h3>{{tareaEnEdicion ? 'Editar' : 'Nueva'}} Tarea</h3>
+            <form class="mt-5" [formGroup]="formulario" (ngSubmit)="save()" autocomplete="off">
                 <div class="mb-2">
                     <label for="nombre">Nombre</label>
-                    <input id="nombre" type="text" placeholder="Nombre" class="form-control"/>
+                    <input id="nombre" type="text" placeholder="Nombre" class="form-control" formControlName="nombre"/>
                 </div>
 
                 <div class="mb-2 form-check">
                     <label for="completado">
-                        <input type="checkbox" class="form-check-input">
+                        <input type="checkbox" class="form-check-input" formControlName="completado">
                         Completado
                     </label>
                 </div>
